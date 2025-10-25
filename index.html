@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlowBlog - Share Your Stories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Theme Variables */
+        body.glow-theme {
+            background-color: #0a0e27;
+            color: #e0e0e0;
+        }
+
+        body.light-theme {
+            background-color: #f5f5f5;
+            color: #333333;
+        }
+
+        body.dark-theme {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .glow-theme .logo {
+            color: #00f3ff;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+        }
+
+        .light-theme .logo {
+            color: #2196F3;
+        }
+
+        .dark-theme .logo {
+            color: #bb86fc;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .username-display {
+            font-weight: 500;
+        }
+
+        .glow-theme .username-display {
+            color: #00f3ff;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #00f3ff;
+            color: #0a0e27;
+        }
+
+        .light-theme .btn-primary {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .dark-theme .btn-primary {
+            background-color: #bb86fc;
+            color: #1a1a1a;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.4);
+        }
+
+        .glow-theme .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+        }
+
+        .light-theme .btn-primary:hover {
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        .dark-theme .btn-primary:hover {
+            box-shadow: 0 5px 15px rgba(187, 134, 252, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .light-theme .btn-secondary {
+            background-color: white;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .light-theme .btn-secondary:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            display: flex;
+            gap: 5px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .light-theme .theme-switcher {
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+        .theme-btn {
+            padding: 8px 15px;
+            border: none;
+            background: transparent;
+            color: inherit;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-btn.active {
+            background-color: #00f3ff;
+            color: #0a0e27;
+        }
+
+        .light-theme .theme-btn.active {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .dark-theme .theme-btn.active {
+            background-color: #bb86fc;
+            color: #1a1a1a;
+        }
+
+        .theme-btn:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Auth Pages */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background-color: #1a1f3a;
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .glow-theme .auth-card {
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .light-theme .auth-card {
+            background-color: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-theme .auth-card {
+            background-color: #2d2d2d;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .glow-theme .auth-title {
+            color: #00f3ff;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .form-input {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+
+        .dark-theme .form-input {
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00f3ff;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .light-theme .form-input:focus {
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+        }
+
+        .dark-theme .form-input:focus {
+            border-color: #bb86fc;
+            box-shadow: 0 0 10px rgba(187, 134, 252, 0.3);
+        }
+
+        .form-input::placeholder {
+            opacity: 0.5;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .strength-weak { background-color: #ff4444; width: 33%; }
+        .strength-medium { background-color: #ffaa00; width: 66%; }
+        .strength-strong { background-color: #00ff88; width: 100%; }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .success-message {
+            color: #00ff88;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .auth-link a {
+            color: #00f3ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .light-theme .auth-link a {
+            color: #2196F3;
+        }
+
+        .dark-theme .auth-link a {
+            color: #bb86fc;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Blog Feed */
+        .blog-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .blog-card {
+            background-color: #1a1f3a;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .glow-theme .blog-card {
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+
+        .glow-theme .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+            border-color: rgba(0, 243, 255, 0.5);
+        }
+
+        .light-theme .blog-card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .dark-theme .blog-card {
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-theme .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(187, 134, 252, 0.2);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .blog-video {
+            width: 100%;
+            height: 250px;
+            border: none;
+        }
+
+        .blog-content {
+            padding: 20px;
+        }
+
+        .blog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .blog-author {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .blog-time {
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        .blog-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .glow-theme .blog-title {
+            color: #00f3ff;
+        }
+
+        .light-theme .blog-title {
+            color: #2196F3;
+        }
+
+        .dark-theme .blog-title {
+            color: #bb86fc;
+        }
+
+        .blog-description {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .blog-footer {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .light-theme .blog-footer {
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .dark-theme .blog-footer {
+            border-top: 1px solid #444;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .like-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #1a1f3a;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .glow-theme .modal-content {
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
+        }
+
+        .light-theme .modal-content {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-theme .modal-content {
+            background-color: #2d2d2d;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .glow-theme .modal-title {
+            color: #00f3ff;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: inherit;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: inherit;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .form-textarea {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+
+        .dark-theme .form-textarea {
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #00f3ff;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .light-theme .form-textarea:focus {
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+        }
+
+        .dark-theme .form-textarea:focus {
+            border-color: #bb86fc;
+            box-shadow: 0 0 10px rgba(187, 134, 252, 0.3);
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .blog-feed {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-switcher {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .auth-card {
+                padding: 30px 20px;
+            }
+        }
+
+        /* View Management */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Loading State */
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="glow-theme">
+
+    <!-- Login View -->
+    <div id="loginView" class="view active">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1 class="auth-title">Welcome Back</h1>
+                <p class="auth-subtitle">Sign in to continue to GlowBlog</p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="loginEmail">Email or Username</label>
+                        <input type="text" id="loginEmail" class="form-input" placeholder="Enter your email or username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    <div id="loginError" class="error-message"></div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Sign In</button>
+                </form>
+                <div class="auth-link">
+                    Don't have an account? <a href="#" id="goToSignup">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup View -->
+    <div id="signupView" class="view">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1 class="auth-title">Create Account</h1>
+                <p class="auth-subtitle">Join GlowBlog and start sharing</p>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label class="form-label" for="signupUsername">Username</label>
+                        <input type="text" id="signupUsername" class="form-input" placeholder="Choose a username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" class="form-input" placeholder="Create a password" required>
+                        <div id="passwordStrength" class="password-strength"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" class="form-input" placeholder="Confirm your password" required>
+                    </div>
+                    <div id="signupError" class="error-message"></div>
+                    <div id="signupSuccess" class="success-message"></div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Create Account</button>
+                </form>
+                <div class="auth-link">
+                    Already have an account? <a href="#" id="goToLogin">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Blog View -->
+    <div id="mainView" class="view">
+        <div class="container">
+            <header class="header">
+                <h1 class="logo">✨ GlowBlog</h1>
+                <div class="header-actions">
+                    <div class="theme-switcher">
+                        <button class="theme-btn active" data-theme="glow">Glow</button>
+                        <button class="theme-btn" data-theme="light">Light</button>
+                        <button class="theme-btn" data-theme="dark">Dark</button>
+                    </div>
+                    <button class="btn btn-primary" id="createPostBtn">+ Create Post</button>
+                    <div class="user-info">
+                        <span class="username-display" id="currentUsername"></span>
+                        <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <div id="blogFeedContainer">
+                <!-- Blog posts will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div id="createPostModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Post</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="createPostForm">
+                <div class="form-group">
+                    <label class="form-label" for="postTitle">Title *</label>
+                    <input type="text" id="postTitle" class="form-input" placeholder="Enter post title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="postDescription">Description *</label>
+                    <textarea id="postDescription" class="form-textarea" placeholder="Write your post content..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="postImage">Image URL (optional)</label>
+                    <input type="url" id="postImage" class="form-input" placeholder="https://example.com/image.jpg">
+                    <img id="imagePreview" class="image-preview" alt="Preview">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="postVideo">Video URL (optional)</label>
+                    <input type="url" id="postVideo" class="form-input" placeholder="https://www.youtube.com/watch?v=... or embed URL">
+                </div>
+                <div id="postError" class="error-message"></div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Publish Post</button>
+                    <button type="button" class="btn btn-secondary" id="cancelPostBtn" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        let users = [
+            {
+                id: 1,
+                username: 'tech_explorer',
+                email: 'explorer@example.com',
+                password: 'password123',
+                createdAt: new Date('2025-10-01')
+            },
+            {
+                id: 2,
+                username: 'creative_mind',
+                email: 'creative@example.com',
+                password: 'password123',
+                createdAt: new Date('2025-10-05')
+            },
+            {
+                id: 3,
+                username: 'story_teller',
+                email: 'storyteller@example.com',
+                password: 'password123',
+                createdAt: new Date('2025-10-10')
+            }
+        ];
+
+        let posts = [
+            {
+                id: 1,
+                authorId: 1,
+                authorName: 'tech_explorer',
+                title: 'Getting Started with Web Development',
+                description: "Web development is an exciting journey! In this post, I'll share my experience learning HTML, CSS, and JavaScript. The key is consistency and building projects.",
+                imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800',
+                videoUrl: '',
+                createdAt: new Date('2025-10-20T10:30:00'),
+                likes: 24
+            },
+            {
+                id: 2,
+                authorId: 2,
+                authorName: 'creative_mind',
+                title: 'My Creative Process',
+                description: "Every creative project starts with inspiration. Here's how I approach design thinking and turn ideas into reality.",
+                imageUrl: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800',
+                videoUrl: '',
+                createdAt: new Date('2025-10-21T14:20:00'),
+                likes: 18
+            },
+            {
+                id: 3,
+                authorId: 3,
+                authorName: 'story_teller',
+                title: 'The Power of Storytelling',
+                description: 'Stories connect us all. Whether through words, images, or videos, storytelling is the most powerful way to share experiences and emotions.',
+                imageUrl: '',
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+                createdAt: new Date('2025-10-22T09:15:00'),
+                likes: 32
+            },
+            {
+                id: 4,
+                authorId: 1,
+                authorName: 'tech_explorer',
+                title: 'Beautiful Landscapes',
+                description: 'Taking a break from coding to appreciate nature. Here are some stunning views from my recent hike.',
+                imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+                videoUrl: '',
+                createdAt: new Date('2025-10-23T16:45:00'),
+                likes: 41
+            },
+            {
+                id: 5,
+                authorId: 2,
+                authorName: 'creative_mind',
+                title: 'Learning Every Day',
+                description: 'The journey of learning never stops. Today I explored new techniques in digital art and it opened up so many possibilities!',
+                imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800',
+                videoUrl: '',
+                createdAt: new Date('2025-10-24T11:30:00'),
+                likes: 27
+            }
+        ];
+
+        let currentUser = null;
+        let currentTheme = 'glow';
+        let nextUserId = 4;
+        let nextPostId = 6;
+
+        // View Management
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        // Theme Management
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.body.className = theme + '-theme';
+            
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.theme === theme) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setTheme(btn.dataset.theme);
+            });
+        });
+
+        // Authentication Functions
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(elementId, message) {
+            const successElement = document.getElementById(elementId);
+            successElement.textContent = message;
+            successElement.style.display = 'block';
+            setTimeout(() => {
+                successElement.style.display = 'none';
+            }, 3000);
+        }
+
+        // Password Strength Indicator
+        document.getElementById('signupPassword').addEventListener('input', (e) => {
+            const password = e.target.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthBar.className = 'password-strength';
+                return;
+            }
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z\d]/.test(password)) strength++;
+            
+            if (strength <= 2) {
+                strengthBar.className = 'password-strength strength-weak';
+            } else if (strength === 3) {
+                strengthBar.className = 'password-strength strength-medium';
+            } else {
+                strengthBar.className = 'password-strength strength-strong';
+            }
+        });
+
+        // Signup Form
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('signupUsername').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            // Validation
+            if (username.length < 3) {
+                showError('signupError', 'Username must be at least 3 characters long');
+                return;
+            }
+            
+            if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+                showError('signupError', 'Username already exists');
+                return;
+            }
+            
+            if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+                showError('signupError', 'Email already registered');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('signupError', 'Password must be at least 6 characters long');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('signupError', 'Passwords do not match');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: nextUserId++,
+                username: username,
+                email: email,
+                password: password,
+                createdAt: new Date()
+            };
+            
+            users.push(newUser);
+            
+            showSuccess('signupSuccess', 'Account created successfully! Redirecting to login...');
+            
+            // Reset form
+            document.getElementById('signupForm').reset();
+            document.getElementById('passwordStrength').className = 'password-strength';
+            
+            // Redirect to login after 2 seconds
+            setTimeout(() => {
+                showView('loginView');
+            }, 2000);
+        });
+
+        // Login Form
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const emailOrUsername = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            // Find user
+            const user = users.find(u => 
+                (u.email.toLowerCase() === emailOrUsername.toLowerCase() || 
+                 u.username.toLowerCase() === emailOrUsername.toLowerCase()) &&
+                u.password === password
+            );
+            
+            if (user) {
+                currentUser = user;
+                document.getElementById('currentUsername').textContent = user.username;
+                document.getElementById('loginForm').reset();
+                showView('mainView');
+                renderBlogFeed();
+            } else {
+                showError('loginError', 'Invalid email/username or password');
+            }
+        });
+
+        // Navigation
+        document.getElementById('goToSignup').addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('signupView');
+        });
+
+        document.getElementById('goToLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('loginView');
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            currentUser = null;
+            showView('loginView');
+        });
+
+        // Blog Post Functions
+        function formatDate(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            
+            return date.toLocaleDateString();
+        }
+
+        function convertYouTubeUrl(url) {
+            if (!url) return '';
+            
+            // If already an embed URL, return as is
+            if (url.includes('/embed/')) return url;
+            
+            // Convert youtube.com/watch?v= to embed format
+            const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/;
+            const match = url.match(youtubeRegex);
+            
+            if (match && match[1]) {
+                return `https://www.youtube.com/embed/${match[1]}`;
+            }
+            
+            return url;
+        }
+
+        function createBlogCard(post) {
+            const card = document.createElement('div');
+            card.className = 'blog-card';
+            
+            let mediaHtml = '';
+            if (post.imageUrl) {
+                mediaHtml = `<img src="${post.imageUrl}" alt="${post.title}" class="blog-image" onerror="this.style.display='none'">`;
+            } else if (post.videoUrl) {
+                const embedUrl = convertYouTubeUrl(post.videoUrl);
+                mediaHtml = `<iframe src="${embedUrl}" class="blog-video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            }
+            
+            card.innerHTML = `
+                ${mediaHtml}
+                <div class="blog-content">
+                    <div class="blog-header">
+                        <div>
+                            <div class="blog-author">@${post.authorName}</div>
+                            <div class="blog-time">${formatDate(post.createdAt)}</div>
+                        </div>
+                    </div>
+                    <h3 class="blog-title">${post.title}</h3>
+                    <p class="blog-description">${post.description}</p>
+                </div>
+                <div class="blog-footer">
+                    <button class="like-btn" onclick="likePost(${post.id})">
+                        ❤️ <span id="likes-${post.id}">${post.likes}</span>
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function renderBlogFeed() {
+            const container = document.getElementById('blogFeedContainer');
+            
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <div class="empty-state-text">No posts yet</div>
+                        <p>Be the first to share your story!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort posts by date (newest first)
+            const sortedPosts = [...posts].sort((a, b) => b.createdAt - a.createdAt);
+            
+            container.innerHTML = '<div class="blog-feed"></div>';
+            const feedElement = container.querySelector('.blog-feed');
+            
+            sortedPosts.forEach(post => {
+                feedElement.appendChild(createBlogCard(post));
+            });
+        }
+
+        window.likePost = function(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
+                document.getElementById(`likes-${postId}`).textContent = post.likes;
+            }
+        };
+
+        // Create Post Modal
+        document.getElementById('createPostBtn').addEventListener('click', () => {
+            document.getElementById('createPostModal').classList.add('active');
+        });
+
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            document.getElementById('createPostModal').classList.remove('active');
+            document.getElementById('createPostForm').reset();
+            document.getElementById('imagePreview').style.display = 'none';
+        });
+
+        document.getElementById('cancelPostBtn').addEventListener('click', () => {
+            document.getElementById('createPostModal').classList.remove('active');
+            document.getElementById('createPostForm').reset();
+            document.getElementById('imagePreview').style.display = 'none';
+        });
+
+        // Image Preview
+        document.getElementById('postImage').addEventListener('input', (e) => {
+            const imageUrl = e.target.value;
+            const preview = document.getElementById('imagePreview');
+            
+            if (imageUrl) {
+                preview.src = imageUrl;
+                preview.style.display = 'block';
+                preview.onerror = () => {
+                    preview.style.display = 'none';
+                };
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        // Create Post Form
+        document.getElementById('createPostForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showError('postError', 'You must be logged in to create a post');
+                return;
+            }
+            
+            const title = document.getElementById('postTitle').value.trim();
+            const description = document.getElementById('postDescription').value.trim();
+            const imageUrl = document.getElementById('postImage').value.trim();
+            const videoUrl = document.getElementById('postVideo').value.trim();
+            
+            if (title.length < 3) {
+                showError('postError', 'Title must be at least 3 characters long');
+                return;
+            }
+            
+            if (description.length < 10) {
+                showError('postError', 'Description must be at least 10 characters long');
+                return;
+            }
+            
+            // Create new post
+            const newPost = {
+                id: nextPostId++,
+                authorId: currentUser.id,
+                authorName: currentUser.username,
+                title: title,
+                description: description,
+                imageUrl: imageUrl,
+                videoUrl: videoUrl,
+                createdAt: new Date(),
+                likes: 0
+            };
+            
+            posts.push(newPost);
+            
+            // Close modal and reset form
+            document.getElementById('createPostModal').classList.remove('active');
+            document.getElementById('createPostForm').reset();
+            document.getElementById('imagePreview').style.display = 'none';
+            
+            // Refresh feed
+            renderBlogFeed();
+        });
+
+        // Close modal on outside click
+        document.getElementById('createPostModal').addEventListener('click', (e) => {
+            if (e.target.id === 'createPostModal') {
+                document.getElementById('createPostModal').classList.remove('active');
+                document.getElementById('createPostForm').reset();
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+
+        // Initialize
+        setTheme('glow');
+    </script>
+</body>
+</html>
